@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="QuestPDF" Version="2023.12.4" />
+      <PackageReference Include="QuestPDF.HTML" Version="1.0.0" />
     </ItemGroup>
 
 </Project>

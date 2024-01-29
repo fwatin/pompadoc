@@ -8,7 +8,7 @@ Console.WriteLine("####Bienvenue sur Pompadoc####");
 
 // GetInputPathUseCase inputPathUseCase = new();
  //string inputPath = inputPathUseCase.GetPath();
-string inputPath = @"D:\Dev\MyProjects\pompadoc\Data\test-jason-burne.json";
+string inputPath = @"D:\Dev\MyProjects\pompadoc\Data\input-people-jason-burne.json";
 //
 Dictionary<string,string> input = new GetInputDataUseCase(inputPath).GetData();
 
