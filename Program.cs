@@ -1,3 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using pompadoc.UseCases;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("####Bienvenue sur Pompadoc####");
+
+GetInputPathUseCase inputPathUseCase = new();
+string inputPath = inputPathUseCase.GetPath();
+
+Dictionary<string,string> input = new GetInputDataUseCase(inputPath).GetData();
