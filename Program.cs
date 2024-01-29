@@ -1,4 +1,5 @@
-﻿using pompadoc.UseCases;
+﻿using HTMLQuestPDF.Extensions;
+using pompadoc.UseCases;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -8,9 +9,11 @@ Console.WriteLine("####Bienvenue sur Pompadoc####");
 
 // GetInputPathUseCase inputPathUseCase = new();
  //string inputPath = inputPathUseCase.GetPath();
-string inputPath = @"D:\Dev\MyProjects\pompadoc\Data\input-people-jason-burne.json";
+string inputPeoplePath = @"D:\Dev\MyProjects\pompadoc\Data\input-people-jason-burne.json";
+string inputTemplatePath = @"D:\Dev\MyProjects\pompadoc\Data\input-template-resiliation-banque.html";
 //
-Dictionary<string,string> input = new GetInputDataUseCase(inputPath).GetData();
+Dictionary<string,string> input = new GetInputDataUseCase(inputPeoplePath).GetData();
+string html = File.ReadAllText(inputTemplatePath);
 
 QuestPDF.Settings.License = LicenseType.Community;
 var document  = Document.Create(container =>
@@ -34,6 +37,7 @@ var document  = Document.Create(container =>
 
                 x.Item().Text(Placeholders.LoremIpsum());
                 x.Item().Image(Placeholders.Image(200, 100));
+                x.Item().HTML(descriptor => descriptor.SetHtml(html));
             });
 
         page.Footer()
