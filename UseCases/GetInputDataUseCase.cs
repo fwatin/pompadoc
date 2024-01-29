@@ -11,18 +11,32 @@ public class GetInputDataUseCase
         this.inputPath = inputPath;
     }
 
-    public Dictionary<string,string> GetData()
+    public Dictionary<string, string> GetData()
     {
         var json = File.ReadAllText(this.inputPath);
-        
-        using (JsonDocument doc = JsonDocument.Parse(json))
+
+        using JsonDocument doc = JsonDocument.Parse(json);
+        var dic = new Dictionary<string, string>();
+        foreach (var property in doc.RootElement.EnumerateObject())
         {
-            var dic = new Dictionary<string, string>();
-            foreach (JsonProperty element in doc.RootElement.EnumerateObject())
+            var element = property.Value;
+            if (element.ValueKind == JsonValueKind.String)
             {
-                dic[element.Name] = element.Value.ToString();
+                dic[property.Name] = element.GetString()!;
             }
-            return dic;
+            else
+            {
+                foreach (var subProperty in element.EnumerateObject())
+                {
+                    var subElement = subProperty.Value;
+                    if (subElement.ValueKind == JsonValueKind.String)
+                    {
+                        dic[$"{property.Name}.{subProperty.Name}"] = subElement.GetString()!;
+                    }
+                }
+            }
         }
+
+        return dic;
     }
 }
