@@ -4,6 +4,7 @@ using QuestPDF.Infrastructure;
 
 Console.WriteLine("####Bienvenue sur Pompadoc####");
 
+
 // GetInputPathUseCase inputPathUseCase = new();
  //string inputPath = inputPathUseCase.GetPath();
 string inputPeoplePath = @"D:\Dev\MyProjects\pompadoc\Data\people\input-people-jason-burne.json";
@@ -17,4 +18,5 @@ var document  = new CreateDocumentUseCase(input).Create(htmlTemplate);
 //document.ShowInPreviewer();
 
 document.GeneratePdf("resiliation-banque.pdf");
+Console.WriteLine("new file generated: resiliation-banque.pdf");
 
