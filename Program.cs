@@ -1,13 +1,11 @@
-﻿using System.Text.Json;
-using pompadoc.Settings;
+﻿using pompadoc.Settings;
 using pompadoc.UseCases;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
 Console.WriteLine("####Bienvenue sur Pompadoc####");
 
-string configurationPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-Configuration configuration = JsonSerializer.Deserialize<Configuration>(File.ReadAllText(configurationPath))!;
+Configuration configuration = Configuration.GetConfiguration();
 QuestPDF.Settings.License = LicenseType.Community;
 
 string[] allPeople = Directory.EnumerateFiles(configuration.Path!.InputPeoplePath!).ToArray();

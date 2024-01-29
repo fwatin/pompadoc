@@ -4,16 +4,16 @@ namespace pompadoc.UseCases;
 
 public class GetInputDataUseCase
 {
-    private readonly string inputPath;
+    private readonly string inputPeoplePath;
 
-    public GetInputDataUseCase(string inputPath)
+    public GetInputDataUseCase(string inputPeoplePath)
     {
-        this.inputPath = inputPath;
+        this.inputPeoplePath = inputPeoplePath;
     }
 
     public Dictionary<string, string> GetData()
     {
-        var json = File.ReadAllText(this.inputPath);
+        string json = File.ReadAllText(this.inputPeoplePath);
         using JsonDocument doc = JsonDocument.Parse(json);
         var dic = new Dictionary<string, string>();
         ParseJsonElement(doc.RootElement, dic, null);
