@@ -10,7 +10,7 @@ string configurationPath = Path.Combine(Directory.GetCurrentDirectory(), "appset
 Configuration configuration = JsonSerializer.Deserialize<Configuration>(File.ReadAllText(configurationPath))!;
 QuestPDF.Settings.License = LicenseType.Community;
 
-IEnumerable<string> allPeople = Directory.EnumerateFiles(configuration.Path!.InputPeoplePath!);
+string[] allPeople = Directory.EnumerateFiles(configuration.Path!.InputPeoplePath!).ToArray();
 string[] allTemplates = Directory.EnumerateFiles(configuration.Path!.InputTemplatePath!).ToArray();
 if (Directory.Exists(configuration.Path.OutputResultPath) is false)
     Directory.CreateDirectory(configuration.Path.OutputResultPath!);
@@ -29,3 +29,4 @@ foreach (string personFilePath in allPeople)
         Console.WriteLine($"new file generated: {templateName}.pdf");
     }
 }
+Console.WriteLine($"total of generated documents: {allPeople.Length * allTemplates.Length}");
