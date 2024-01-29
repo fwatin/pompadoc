@@ -1,9 +1,9 @@
 ﻿{
-  "etatCivil": {
+  "état-civil": {
     "nom": "Burne",
-    "prenom": "Jason",
-    "dateDeNaissance": "1985-07-15",
-    "lieuDeNaissance": "Paris, France",
+    "prénom": "Jason",
+    "date-de-naissance": "1985-07-15",
+    "lieu-de-naissance": "Paris, France",
     "adresse": {
       "rue": "123 rue de la Liberté",
       "ville": "Paris",

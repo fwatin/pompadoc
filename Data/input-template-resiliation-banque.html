@@ -4,7 +4,6 @@
     <title>Lettre de Résiliation de Compte Bancaire</title>
     <style>
         .expediteur, .corps, .signature {
-            margin: 20px;
             font-family: Arial, sans-serif;
         }
         .expediteur {
@@ -18,17 +17,17 @@
 </head>
 <body>
 <div class="expediteur">
-    <p>Jean Dupont</p>
-    <p>123 Rue de la Liberté</p>
-    <p>75001 Paris</p>
-    <p>France</p>
+    <p>[état-civil.prénom] [état-civil.nom]</p>
+    <p>[état-civil.adresse.rue]</p>
+    <p>[état-civil.adresse.ville]</p>
+    <p>[état-civil.adresse.pays]</p>
     <br>
-    <p>Date: <script>document.write(new Date().toLocaleDateString());</script></p>
 </div>
 
 <div class="corps">
-    <h2>Sujet : Demande de Résiliation du Compte Bancaire</h2>
-    <p>Cher(e) [Nom de la banque],</p>
+    <p>Sujet : Demande de Résiliation du Compte Bancaire</p>
+    <p></p>
+    <p>Madame, Monsieur,</p>
     <p>
         Je vous écris pour demander la résiliation de mon compte bancaire n° [Numéro de compte] détenu dans votre établissement.
         Cette demande fait suite à ma décision personnelle de restructurer mes finances.
