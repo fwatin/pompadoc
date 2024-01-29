@@ -6,8 +6,8 @@ Console.WriteLine("####Bienvenue sur Pompadoc####");
 
 // GetInputPathUseCase inputPathUseCase = new();
  //string inputPath = inputPathUseCase.GetPath();
-string inputPeoplePath = @"D:\Dev\MyProjects\pompadoc\Data\input-people-jason-burne.json";
-string inputTemplatePath = @"D:\Dev\MyProjects\pompadoc\Data\input-template-resiliation-banque.html";
+string inputPeoplePath = @"D:\Dev\MyProjects\pompadoc\Data\people\input-people-jason-burne.json";
+string inputTemplatePath = @"D:\Dev\MyProjects\pompadoc\Data\templates\input-template-resiliation-banque.html";
 
 Dictionary<string,string> input = new GetInputDataUseCase(inputPeoplePath).GetData();
 string htmlTemplate = File.ReadAllText(inputTemplatePath);
