@@ -1,10 +1,14 @@
-﻿using pompadoc.UseCases;
+﻿using System.Text.Json;
+using pompadoc.Settings;
+using pompadoc.UseCases;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
 Console.WriteLine("####Bienvenue sur Pompadoc####");
 
-
+string configurationPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+Configuration configuration = JsonSerializer.Deserialize<Configuration>(File.ReadAllText(configurationPath))!;
+  
 // GetInputPathUseCase inputPathUseCase = new();
  //string inputPath = inputPathUseCase.GetPath();
 string inputPeoplePath = @"D:\Dev\MyProjects\pompadoc\Data\people\input-people-jason-burne.json";
