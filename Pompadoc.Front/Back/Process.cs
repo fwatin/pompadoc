@@ -3,7 +3,7 @@ using pompadoc.UseCases;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
-public static class Program
+public static class Process
 {
     public static void Main()
     {

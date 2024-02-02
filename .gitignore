@@ -2,3 +2,7 @@
 /.idea/*
 /bin/*
 /obj/*
+/Pompadoc.Front/.vs/*
+/Pompadoc.Front/bin/*
+/Pompadoc.Front/obj/*
+/Pompadoc.Front/.idea*
