@@ -26,11 +26,10 @@ public class Processor
         return content;
     }
 
-    public async Task Process()
+    public async Task<List<MemoryStream>> Process()
     {
-        Configuration configuration = Configuration.GetConfiguration();
         QuestPDF.Settings.License = LicenseType.Community;
-        List<Document> documents = new List<Document>();
+        List<MemoryStream> pdfStreams = new List<MemoryStream>();
 
         foreach (var deceasedFile in deceasedFiles)
         {
@@ -41,13 +40,13 @@ public class Processor
             foreach (var templateFile in templateFiles)
             {
                 string htmlTemplate = await ReadFileContent(templateFile);
-                string templateName = templateFile.Name;
                 Document document = new CreateDocumentUseCase(input).Create(htmlTemplate);
-                documents.Add(document);
-                //string outputPath = Path.Combine(configuration.Path.OutputResultPath!, $"{templateName}.pdf");
-                //document.GeneratePdf(outputPath);
-                //Console.WriteLine($"new file generated: {templateName}.pdf");
+                var memoryStream = new MemoryStream();
+                document.GeneratePdf(memoryStream);
+                memoryStream.Position = 0; // Reset the stream position for reading
+                pdfStreams.Add(memoryStream);
             }
         }
+        return pdfStreams;
     }
 }

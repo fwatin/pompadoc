@@ -140,13 +140,13 @@
         isLoading = false;
     }
 
-    private void ProcessDocuments()
+    private async Task ProcessDocuments()
     {
         isProcessing = true;
         processComplete = false;
 
         Processor processor = new Processor(deceasedFiles,loadedTemplates);
-        processor.Process();
+        List<MemoryStream> pdfStreams = await processor.Process();
 
         isProcessing = false;
         processComplete = true;
