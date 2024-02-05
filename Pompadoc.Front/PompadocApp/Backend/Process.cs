@@ -1,38 +1,53 @@
-﻿using pompadoc.Settings;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using pompadoc.Settings;
 using pompadoc.UseCases;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
+using System.Text;
 using Document = QuestPDF.Fluent.Document;
 
-public static class Processor
+public class Processor
 {
-    public static void Process()
-    {
-        Console.WriteLine("####Bienvenue sur Pompadoc####");
+    private readonly List<IBrowserFile> deceasedFiles;
+    private readonly List<IBrowserFile> templateFiles;
 
+    public Processor(List<IBrowserFile> deceasedFiles, List<IBrowserFile> templateFiles)
+    {
+        this.deceasedFiles = deceasedFiles;
+        this.templateFiles = templateFiles;
+    }
+
+    private async Task<string> ReadFileContent(IBrowserFile file)
+    {
+        long maxSize = 10 * 1024 * 1024; // Exemple de limite de 10 MB
+        using var stream = file.OpenReadStream(maxSize);
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+        string content = await reader.ReadToEndAsync();
+        return content;
+    }
+
+    public async Task Process()
+    {
         Configuration configuration = Configuration.GetConfiguration();
         QuestPDF.Settings.License = LicenseType.Community;
+        List<Document> documents = new List<Document>();
 
-        string[] allPeople = Directory.EnumerateFiles(configuration.Path!.InputPeoplePath!).ToArray();
-        string[] allTemplates = Directory.EnumerateFiles(configuration.Path!.InputTemplatePath!).ToArray();
-        if (Directory.Exists(configuration.Path.OutputResultPath) is false)
-            Directory.CreateDirectory(configuration.Path.OutputResultPath!);
-
-        foreach (string personFilePath in allPeople)
+        foreach (var deceasedFile in deceasedFiles)
         {
-            Dictionary<string, string> input = new GetInputDataUseCase(personFilePath).GetData();
+            string jsonContent = await ReadFileContent(deceasedFile);
 
-            foreach (string templatePath in allTemplates)
+            Dictionary<string, string> input = new GetInputDataUseCase(jsonContent).GetData();
+
+            foreach (var templateFile in templateFiles)
             {
-                string htmlTemplate = File.ReadAllText(templatePath);
-                string templateName = Path.GetFileNameWithoutExtension(templatePath);
+                string htmlTemplate = await ReadFileContent(templateFile);
+                string templateName = templateFile.Name;
                 Document document = new CreateDocumentUseCase(input).Create(htmlTemplate);
-                string outputPath = Path.Combine(configuration.Path.OutputResultPath!, $"{templateName}.pdf");
-                document.GeneratePdf(outputPath);
-                Console.WriteLine($"new file generated: {templateName}.pdf");
+                documents.Add(document);
+                //string outputPath = Path.Combine(configuration.Path.OutputResultPath!, $"{templateName}.pdf");
+                //document.GeneratePdf(outputPath);
+                //Console.WriteLine($"new file generated: {templateName}.pdf");
             }
         }
-
-        Console.WriteLine($"total of generated documents: {allPeople.Length * allTemplates.Length}");
     }
 }

@@ -140,13 +140,13 @@
         isLoading = false;
     }
 
-    private async Task ProcessDocuments()
+    private void ProcessDocuments()
     {
         isProcessing = true;
         processComplete = false;
 
-
-        await Task.Delay(3000);
+        Processor processor = new Processor(deceasedFiles,loadedTemplates);
+        processor.Process();
 
         isProcessing = false;
         processComplete = true;
