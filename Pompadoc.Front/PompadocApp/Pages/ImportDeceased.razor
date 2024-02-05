@@ -1,22 +1,22 @@
 ﻿@page "/importDeceased"
 
-<PageTitle>Importation Document Décès</PageTitle>
+<PageTitle>Génération des pdfs</PageTitle>
 
 <h1>Importer les informations du défunt</h1>
 
 <p>Cette interface vous permet de sélectionner et d'importer le document JSON contenant les informations relatives au défunt.</p>
 
-<InputFile OnChange="@LoadFiles" multiple accept=".json" />
+<InputFile OnChange="@LoadJsonForDeceased" multiple accept=".json" />
 
 @if (isLoading)
 {
     <p>Importation en cours...</p>
 }
-else if (loadedFiles.Count > 0)
+else if (deceasedFiles.Count > 0)
 {
     <div class="file-info">
         <h3>Fichiers chargés</h3>
-        @foreach (var file in loadedFiles)
+        @foreach (var file in deceasedFiles)
         {
             <div class="file-details">
                 <p>Nom : @file.Name</p>
@@ -41,19 +41,19 @@ else
 </style>
 
 @code {
-    private List<IBrowserFile> loadedFiles = new();
+    private List<IBrowserFile> deceasedFiles = new();
     private bool isLoading;
 
-    private void LoadFiles(InputFileChangeEventArgs e)
+    private void LoadJsonForDeceased(InputFileChangeEventArgs e)
     {
         isLoading = true;
-        loadedFiles.Clear();
+        deceasedFiles.Clear();
 
         foreach (var file in e.GetMultipleFiles())
         {
             if (file.ContentType == "application/json")
             {
-                loadedFiles.Add(file);
+                deceasedFiles.Add(file);
             }
         }
 
