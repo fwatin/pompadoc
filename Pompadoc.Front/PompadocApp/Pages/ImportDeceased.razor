@@ -1,55 +1,47 @@
 ﻿@page "/importDeceased"
 
-<PageTitle>File Upload 1</PageTitle>
+<PageTitle>Importation Document Décès</PageTitle>
 
-<h1>File Upload Example 1</h1>
+<h1>Importer les informations du défunt</h1>
 
-<p>
-    <label>
-        Max file size:
-        <input type="number" @bind="maxFileSize" />
-    </label>
-</p>
+<p>Cette interface vous permet de sélectionner et d'importer le document JSON contenant les informations relatives au défunt.</p>
 
-<p>
-    <label>
-        Max allowed files:
-        <input type="number" @bind="maxAllowedFiles" />
-    </label>
-</p>
-
-<p>
-    <label>
-        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
-        <InputFile OnChange="@LoadFiles" multiple />
-    </label>
-</p>
+<InputFile OnChange="@LoadFiles" multiple accept=".json" />
 
 @if (isLoading)
 {
-    <p>Uploading...</p>
+    <p>Importation en cours...</p>
+}
+else if (loadedFiles.Count > 0)
+{
+    <div class="file-info">
+        <h3>Fichiers chargés</h3>
+        @foreach (var file in loadedFiles)
+        {
+            <div class="file-details">
+                <p>Nom : @file.Name</p>
+                <p>Modifié le : @file.LastModified.ToString("dd/MM/yyyy à HH:mm")</p>
+                <p>Taille : @file.Size octets</p>
+                <p>Type : @file.ContentType</p>
+            </div>
+        }
+    </div>
 }
 else
 {
-    <ul>
-        @foreach (var file in loadedFiles)
-        {
-            <li>
-                <ul>
-                    <li>Name: @file.Name</li>
-                    <li>Last modified: @file.LastModified.ToString()</li>
-                    <li>Size (bytes): @file.Size</li>
-                    <li>Content type: @file.ContentType</li>
-                </ul>
-            </li>
-        }
-    </ul>
+    <p>Aucun fichier sélectionné. Veuillez choisir un fichier JSON.</p>
 }
+
+<style>
+    h1 { color: #4A90E2; }
+    .file-info { margin-top: 20px; background-color: #F0F4F8; padding: 10px; border-radius: 5px; }
+    .file-details { margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #E1E1E1; }
+    .file-details:last-child { border-bottom: none; }
+    p { margin: 5px 0; }
+</style>
 
 @code {
     private List<IBrowserFile> loadedFiles = new();
-    private long maxFileSize = 1024 * 15;
-    private int maxAllowedFiles = 3;
     private bool isLoading;
 
     private void LoadFiles(InputFileChangeEventArgs e)
@@ -57,14 +49,11 @@ else
         isLoading = true;
         loadedFiles.Clear();
 
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        foreach (var file in e.GetMultipleFiles())
         {
-            try
+            if (file.ContentType == "application/json")
             {
                 loadedFiles.Add(file);
-            }
-            catch (Exception ex)
-            {
             }
         }
 
