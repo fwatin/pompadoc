@@ -8,3 +8,5 @@
 /Pompadoc.Front/.idea*
 /Pompadoc.Front/PompadocApp/obj/Debug/*
 /Pompadoc.Front/PompadocApp/obj/*
+/Pompadoc.Front/PompadocApp/bin/*
+/Pompadoc.Front/PompadocApp/obj/*
