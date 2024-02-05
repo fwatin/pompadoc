@@ -2,46 +2,113 @@
 
 <PageTitle>Génération des pdfs</PageTitle>
 
-<h1>Importer les informations du défunt</h1>
+<section>
+    <h1>Importer les informations du défunt</h1>
 
-<p>Cette interface vous permet de sélectionner et d'importer le document JSON contenant les informations relatives au défunt.</p>
+    <p>Cette interface vous permet de sélectionner et d'importer le document JSON contenant les informations relatives au défunt.</p>
 
-<InputFile OnChange="@LoadJsonForDeceased" multiple accept=".json" />
+    <InputFile OnChange="@LoadJsonForDeceased" multiple accept=".json" />
 
-@if (isLoading)
-{
-    <p>Importation en cours...</p>
-}
-else if (deceasedFiles.Count > 0)
-{
-    <div class="file-info">
-        <h3>Fichiers chargés</h3>
-        @foreach (var file in deceasedFiles)
-        {
-            <div class="file-details">
-                <p>Nom : @file.Name</p>
-                <p>Modifié le : @file.LastModified.ToString("dd/MM/yyyy à HH:mm")</p>
-                <p>Taille : @file.Size octets</p>
-                <p>Type : @file.ContentType</p>
-            </div>
-        }
-    </div>
-}
-else
-{
-    <p>Aucun fichier sélectionné. Veuillez choisir un fichier JSON.</p>
-}
+    @if (isLoading)
+    {
+        <p>Importation en cours...</p>
+    }
+    else if (deceasedFiles.Count > 0)
+    {
+        <div class="file-info">
+            <h3>Fichiers chargés</h3>
+            @foreach (var file in deceasedFiles)
+            {
+                <div class="file-details">
+                    <p>Nom : @file.Name</p>
+                    <p>Modifié le : @file.LastModified.ToString("dd/MM/yyyy à HH:mm")</p>
+                    <p>Taille : @file.Size octets</p>
+                    <p>Type : @file.ContentType</p>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>Aucun fichier sélectionné. Veuillez choisir un fichier JSON.</p>
+    }
+</section>
+
+<section>
+    <h2>Importer les Templates HTML</h2>
+    <p>Sélectionnez et importez les templates HTML pour la création des documents.</p>
+    <InputFile OnChange="@LoadTemplates" multiple accept=".html" />
+    @if (loadedTemplates.Count > 0)
+    {
+        <div class="feedback">
+            <h3>Templates HTML chargés</h3>
+            @foreach (var file in loadedTemplates)
+            {
+                <p>@file.Name</p>
+            }
+        </div>
+    }
+</section>
+
+<section>
+    @if (isProcessing)
+    {
+        <div class="loader"></div>
+        <p>Traitement en cours...</p>
+    }
+    else if (processComplete)
+    {
+        <p>Processus complet.</p>
+    }
+    else
+    {
+        <button class="process-btn" @onclick="ProcessDocuments">Générer les Documents</button>
+    }
+</section>
 
 <style>
-    h1 { color: #4A90E2; }
-    .file-info { margin-top: 20px; background-color: #F0F4F8; padding: 10px; border-radius: 5px; }
-    .file-details { margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #E1E1E1; }
-    .file-details:last-child { border-bottom: none; }
-    p { margin: 5px 0; }
+    h1 {
+        color: #4A90E2;
+    }
+
+    .file-info {
+        margin-top: 20px;
+        background-color: #F0F4F8;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .file-details {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-bottom: 1px solid #E1E1E1;
+    }
+
+        .file-details:last-child {
+            border-bottom: none;
+        }
+
+    p {
+        margin: 5px 0;
+    }
+
+    .loader {
+        border: 6px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 6px solid #3498db;
+        width: 30px;
+        height: 30px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+    }
+
 </style>
 
 @code {
     private List<IBrowserFile> deceasedFiles = new();
+    private List<IBrowserFile> loadedTemplates = new();
+    private bool isProcessing = false;
+    private bool processComplete = false;
     private bool isLoading;
 
     private void LoadJsonForDeceased(InputFileChangeEventArgs e)
@@ -58,5 +125,30 @@ else
         }
 
         isLoading = false;
+    }
+
+    private void LoadTemplates(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        loadedTemplates.Clear();
+
+        foreach (var file in e.GetMultipleFiles())
+        {
+            loadedTemplates.Add(file);
+        }
+
+        isLoading = false;
+    }
+
+    private async Task ProcessDocuments()
+    {
+        isProcessing = true;
+        processComplete = false;
+
+
+        await Task.Delay(3000);
+
+        isProcessing = false;
+        processComplete = true;
     }
 }
