@@ -6,3 +6,5 @@
 /Pompadoc.Front/bin/*
 /Pompadoc.Front/obj/*
 /Pompadoc.Front/.idea*
+/Pompadoc.Front/PompadocApp/obj/Debug/*
+/Pompadoc.Front/PompadocApp/obj/*
