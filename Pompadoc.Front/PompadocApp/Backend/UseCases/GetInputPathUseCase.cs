@@ -4,7 +4,7 @@ public class GetInputPathUseCase
 {
     public string GetPath()
     {
-        Console.WriteLine("Entrer le chemin ou se trouve les jsons contenant les détails des défunts:");
+        Console.WriteLine("Entrer le chemin ou se trouve les jsons contenant les détails des morts:");
         string? path = Console.ReadLine();
         if(path is null) throw new($"Path is null");
         return path!;
